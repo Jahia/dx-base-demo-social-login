@@ -104,7 +104,7 @@
                                onclick="connectToFacebook${fn:replace(currentNode.identifier, '-', '')}();return false;"
                                     <c:if test="${not empty htmlId}"> id="${htmlId}"</c:if>
                                <c:if test="${renderContext.editMode}">disabled</c:if> >
-                                <img src="<c:url value="${url.currentModule}/img/login-button-facebook.png"/>" alt="" border="0"/>
+                                <img style="width: 70%; margin: auto; display: block;" src="<c:url value="${url.currentModule}/img/login-button-facebook.png"/>" alt="" border="0"/>
                             </a>
 
                         </c:if>
