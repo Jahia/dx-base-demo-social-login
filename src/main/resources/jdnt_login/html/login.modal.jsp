@@ -19,13 +19,9 @@
 <%--@elvariable id="currentUser" type="org.jahia.services.usermanager.JahiaUser"--%>
 <%--@elvariable id="currentAliasUser" type="org.jahia.services.usermanager.JahiaUser"--%>
 <template:addResources type="css" resources="plugins/login-signup-modal-window/style.css"/>
+<template:addResources type="css" resources="dx-base-social-login.css"/>
 <template:addResources type="javascript" resources="modernizr.js"/>
 <template:addResources type="javascript" resources="plugins/login-signup-modal-window/main.js"/>
-
-<c:set var="facebookNode"/>
-<c:forEach var="node" items="${jcr:getDescendantNodes(renderContext.site, 'joant:facebookOAuthSettings')}">
-    <c:set var="facebookNode" value="${node}"/>
-</c:forEach>
 
 
 <c:set var="modalOption" value="${empty param['loginError'] ? 'hide' : 'show'}"/>
@@ -44,6 +40,14 @@
                                     key="${param['loginError'] == 'account_locked' ? 'message.accountLocked' : 'message.invalidLogin'}"/></div>
                         </c:if>
 
+                        <template:include view="hidden.modal.facebook"/>
+                        <template:include view="hidden.modal.linkedin"/>
+
+                        <div class="loginFormContainer-or">
+                            <span class="loginForm-or">
+                                <span><fmt:message key="label.or"/></span>
+                            </span>
+                        </div>
                         <p class="fieldset">
                             <label class="image-replace cd-username" for="username">
                                 <fmt:message key="label.username"/></label>
@@ -59,55 +63,6 @@
                                    type="password" placeholder="<fmt:message key="label.password"/>"/>
                             <a href="javascript:void(0);" class="hide-password">Show</a>
                             <span class="cd-error-message">Error message here!</span>
-                        </p>
-
-                        <p class="fieldset">
-
-                        <c:if test="${(not renderContext.liveMode and facebookNode eq '') or (facebookNode ne '' and not facebookNode.properties.isActivate.boolean)}">
-                            <div style="color: red;">
-                                <fmt:message key="joant_facebookButton.error.connectorNotConfigured"/>
-                            </div>
-                        </c:if>
-
-                        <c:if test="${facebookNode ne '' and facebookNode.properties.isActivate.boolean and (not renderContext.loggedIn or renderContext.editMode)}">
-                            <c:set var="tagType" value="${currentNode.properties['tagType'].string}"/>
-                            <template:addResources type="css" resources="joaFacebookButton.css"/>
-
-                            <template:addResources>
-                                <script>
-                                    function connectToFacebook${fn:replace(currentNode.identifier, '-', '')}() {
-                                        var popup = window.open('', "Facebook Authorization", "menubar=no,status=no,scrollbars=no,width=1145,height=725,modal=yes,alwaysRaised=yes");
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open('GET', '<c:url value="${url.base}${renderContext.site.home.path}"/>.connectToFacebookAction.do');
-                                        xhr.setRequestHeader('Accept', 'application/json;');
-                                        xhr.send();
-                                        xhr.onreadystatechange = function () {
-                                            if (xhr.readyState != 4 || xhr.status != 200) return;
-                                            var json = JSON.parse(xhr.responseText);
-                                            popup.location.href = json.authorizationUrl;
-                                            window.addEventListener('message', function (event) {
-                                                if (event.data.authenticationIsDone) {
-                                                    setTimeout(function () {
-                                                        popup.close();
-                                                        if (event.data.isAuthenticate) {
-                                                            window.location.search = 'site=${renderContext.site.siteKey}';
-                                                        }
-                                                    }, 5000);
-                                                }
-                                            });
-                                        };
-                                    }
-                                </script>
-                            </template:addResources>
-
-                            <a href="#" style="color: transparent;"
-                               onclick="connectToFacebook${fn:replace(currentNode.identifier, '-', '')}();return false;"
-                                    <c:if test="${not empty htmlId}"> id="${htmlId}"</c:if>
-                               <c:if test="${renderContext.editMode}">disabled</c:if> >
-                                <img style="width: 70%; margin: auto; display: block;" src="<c:url value="${url.currentModule}/img/login-button-facebook.png"/>" alt="" border="0"/>
-                            </a>
-
-                        </c:if>
                         </p>
 
                         <p class="fieldset">

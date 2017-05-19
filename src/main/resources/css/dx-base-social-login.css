@@ -1,0 +1,47 @@
+.social-login-logo{
+    width: 70%;
+    margin: auto;
+    display: block;
+}
+
+.facebook-social-logo{
+    height: 66px;
+}
+
+.linkedin-social-logo{
+    height: 66px;
+}
+
+.loginFormContainer-or{
+    padding-top: 25px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.loginForm-or{
+    position:relative;
+    text-align: center;
+    overflow: hidden;
+}
+
+.loginForm-or span{
+    padding: 20px;
+}
+
+.loginForm-or::before {
+    content: '' !important;
+    position: absolute !important;
+    border-bottom: 1px solid #999 !important;
+    top: 50% !important;
+    right: 100% !important;
+    width: 5000px !important;
+}
+
+.loginForm-or::after {
+    content: '' !important;
+    position: absolute !important;
+    border-bottom: 1px solid #999 !important;
+    top: 50% !important;
+    left: 100% !important;
+    width: 5000px !important;
+}
