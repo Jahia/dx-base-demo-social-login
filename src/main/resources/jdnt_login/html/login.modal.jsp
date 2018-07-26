@@ -42,6 +42,7 @@
 
                         <template:include view="hidden.modal.facebook"/>
                         <template:include view="hidden.modal.linkedin"/>
+                        <template:include view="hidden.modal.google"/>
 
                         <div class="loginFormContainer-or">
                             <span class="loginForm-or">
